@@ -1,0 +1,6 @@
+framework module Pods_ByoSocialUITests {
+  umbrella header "Pods-ByoSocialUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
