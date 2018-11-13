@@ -22,7 +22,7 @@ class SocialListViewModel {
         id = self.socialModel.id
         linkurl = self.socialModel.linkurl
         mediatype = self.socialModel.mediatype
-       
+        
     }
     /**
      Creates a cellInstance method for display data on UI.
@@ -36,7 +36,7 @@ class SocialListViewModel {
     func cellInstance(_ tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SocialTableCellView.stringRepresentation, for: indexPath) as! SocialTableCellView
         cell.setup(self)
-        
+        tableView.jp_handleCellUnreachableType(for: cell, at: indexPath)
         return cell
     }
     /**

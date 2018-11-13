@@ -24,4 +24,5 @@ public struct Storyboard {
 public struct AssetsImages {
     
     static let kloading                         = UIImage(named: "loading")
+    static let kPlaceholder                         = UIImage(named: "placeholder")
 }

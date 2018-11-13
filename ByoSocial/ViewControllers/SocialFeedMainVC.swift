@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import JPVideoPlayer
 class SocialFeedMainVC: UIViewController {
     
     static func storyboardInstance() -> SocialFeedMainVC {
@@ -38,7 +38,11 @@ class SocialFeedMainVC: UIViewController {
         loadDataFromLocalJsonFile()
         // Do any additional setup after loading the view.
     }
-    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let tableViewFrame: CGRect = tblSocial.frame
+        tblSocial.jp_tableViewVisibleFrame = tableViewFrame
+    }
     /**
      Creates a method for setup UI of TableView.
      
@@ -54,6 +58,9 @@ class SocialFeedMainVC: UIViewController {
         tblSocial.rowHeight = UITableViewAutomaticDimension
         
         tblSocial.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tblSocial.frame.size.width, height: 0))
+        
+        tblSocial.jp_delegate = self
+        tblSocial.jp_scrollPlayStrategyType = .bestCell
     }
     /**
      Creates a method for fetch all social feeds.
@@ -93,10 +100,10 @@ class SocialFeedMainVC: UIViewController {
     
     @IBAction func btnPressed(_ sender: UIButton) {
         if sender == btnLocal {
-           sender.isSelected = true
+            sender.isSelected = true
             btnGlobal.isSelected = false
         }
-       else {
+        else {
             sender.isSelected = true
             btnLocal.isSelected = false
         }
@@ -106,17 +113,17 @@ class SocialFeedMainVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 // Mark UITableView delegate and datasource methods
 extension SocialFeedMainVC: UITableViewDelegate, UITableViewDataSource {
@@ -142,6 +149,26 @@ extension SocialFeedMainVC: UITableViewDelegate, UITableViewDataSource {
         return socialListViewModel.cellInstance(tableView, indexPath: indexPath)
     }
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+    }
+    
+    
+}
+extension SocialFeedMainVC : JPTableViewPlayVideoDelegate {
+    func tableView(_ tableView: UITableView, willPlayVideoOn cell: UITableViewCell) {
+        cell.jp_videoPlayView?.jp_resumeMutePlay(with: (cell.jp_videoURL)!, bufferingIndicator: nil, progressView: nil, configuration: nil)
+    }
+}
+
+extension SocialFeedMainVC : UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        tblSocial.jp_scrollDidScroll()
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        tblSocial.jp_scrollDidEndDecelerating()
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        tblSocial.jp_scrollDidEndDraggingWillDecelerate(decelerate)
         
     }
 }

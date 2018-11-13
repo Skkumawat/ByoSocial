@@ -9,11 +9,11 @@
 import UIKit
 import JPVideoPlayer
 class SocialTableCellView: UITableViewCell {
-
+    
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblTime: UILabel!
     
-     @IBOutlet weak var locationImage: UIImageView!
+    @IBOutlet weak var locationImage: UIImageView!
     @IBOutlet weak var lblLocation: UILabel!
     
     @IBOutlet weak var imgView: UIImageView!
@@ -42,22 +42,17 @@ class SocialTableCellView: UITableViewCell {
                     }
                     imgView.imageWithURL(url: feedURL, placeholder: AssetsImages.kloading, handler: nil)
                 }
-                
             }
-            else{
-               
+            else
+            {
+                imgView.image = AssetsImages.kPlaceholder
                 if let url = socialViewModel.linkurl {
-                     print("url==\(url)")
                     guard let feedURL = url.makeURL()  else {
-                        imgView.image = AssetsImages.kloading
                         imgView.isHidden = true
                         return
                     }
-                    imgView.imageWithURL(url: feedURL, placeholder: AssetsImages.kloading, handler: nil)
-                    
-                    imgView.jp_resumePlay(with: feedURL, bufferingIndicator: nil, controlView: nil, progressView: nil, configuration: nil)
-                    
-                    //imgView.jp_resumePlay(with: feedURL, options: [], configuration: nil)
+                    self.jp_videoURL = feedURL
+                    self.jp_videoPlayView = self.imgView
                 }
             }
             
@@ -65,7 +60,7 @@ class SocialTableCellView: UITableViewCell {
     }
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     override func prepareForReuse() {
